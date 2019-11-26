@@ -8,7 +8,7 @@ let Boards = require('./boards');
 var difficulty = 'Easy';
 
 var pencilMode = false;
-var pencilModeStatus = 'Turn on Pencil Mode'
+var pencilModeStatus = 'Turn on Pencil'
 var pencilModeButtonClass = 'btn btn-outline-primary btn-sm'
 var pencilModeIconClass = 'far fa-edit';
 
@@ -179,8 +179,7 @@ class Board extends React.Component {
   render() {
     //note that the third colgroup isn't realistically necessary for the css to work
     return (
-      <table>
-        <caption>{difficulty} difficulty</caption>
+      <table style= {{width: '340px'}}>
         <colgroup><col span="3"></col></colgroup>
         <colgroup><col span="3"></col></colgroup>
         <colgroup><col span="3"></col></colgroup>
@@ -467,13 +466,13 @@ class Game extends React.Component {
         pencilMode = false;
         pencilModeButtonClass = 'btn btn-outline-primary btn-sm'
         pencilModeIconClass = 'far fa-edit'
-        pencilModeStatus = 'Turn on Pencil Mode'
+        pencilModeStatus = 'Turn on Pencil'
         
       } else {
         pencilMode = true;
         pencilModeButtonClass = 'btn btn-primary btn-sm'
         pencilModeIconClass = 'fas fa-edit'
-        pencilModeStatus = 'Turn off Pencil Mode'
+        pencilModeStatus = 'Turn off Pencil'
       }
 
       const history = this.state.history
@@ -541,14 +540,13 @@ class Game extends React.Component {
               onClick = {(i) => this.highlightSquares(i)}
             />
           </div>
+          <div>
+          {undo} {redo} {pencilMode} {clear}
+          </div>
           <SquareOptions
             onClick = {(i) => this.handleOptionClick(i, activeSquare)}
             progress = {current.progress}
           />
-          <div>{pencilMode}</div>
-          <div>
-          {undo} {redo} {clear}
-          </div>
           <h4>Status:</h4>
           <div>{status}</div>
         </div>

@@ -70,7 +70,8 @@ td {
   //border: solid thin;
   width: 33%;
   height: 33%;
-  font-Size: 8px;
+  font-Size: 12px;
+  font-Style: italic;
   line-height: 8px;
   //font-weight: normal;
   //text-align: center;
@@ -85,11 +86,11 @@ td {
   background: rgb(255, 255, 255);
   border: 1px solid #999;
   border-radius: 50%;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: normal;
   text-align: center; 
-  height: 33px;
-  width: 33px;
+  height: 30px;
+  width: 25px;
 }
 
 .buttonOption:active {
@@ -185,19 +186,6 @@ td {
 
 .square:focus {
   outline: none;
-}
-
-.notes {
-  border: none;
-  font-size: 6px;
-  font-weight: normal;
-  line-height: 12px;
-  height: 12px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 12px;
 }
 
 .kbd-navigation .square:focus {
