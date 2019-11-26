@@ -416,7 +416,7 @@ class Game extends React.Component {
 
       const undo = <button onClick = {() => this.jumpTo(this.state.stepNumber-1)}>{'Undo'}</button>
       const redo = <button onClick = {() => this.jumpTo(this.state.stepNumber+1)}>{'Redo'}</button>
-      const pencilMode = <button onClick = {() => this.togglePencilMode()}>{'Pencil Mode'}</button>
+      //const pencilMode = <button onClick = {() => this.togglePencilMode()}>{'Pencil Mode'}</button>
       const clear = <button onClick = {() => this.handleOptionClick(-1, activeSquare)}>{'Clear cell'}</button>
       
       //const solve = <button onClick = {() => startSolving(bArray)}>{'SOLVE'}</button>
@@ -444,7 +444,7 @@ class Game extends React.Component {
           <div className = "game-info">
           <br></br>
           <div>
-          {undo} {redo} {pencilMode} {clear}
+          {undo} {redo} {clear}
           </div>
           <h4>Status:</h4>
           <div>{status}</div>
