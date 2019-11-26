@@ -2,7 +2,7 @@
   "name": "sudoku-game",
   "version": "0.1.0",
   "private": true,
-  "engines", {
+  "engines": {
     "npm": "5.6.0",
     "node": "12.13.1"
   },
