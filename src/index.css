@@ -1,0 +1,168 @@
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
+}
+
+/* ol, ul {
+  padding-left: 30px;
+} */
+
+
+table { 
+  border-collapse: collapse; 
+  font-family: Calibri, sans-serif; 
+}
+
+colgroup, tbody { 
+  border: solid medium; 
+}
+
+button {
+  font-size: 18px;
+}
+
+td { 
+  text-align: center; 
+  user-select: none;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+
+.buttonOption {
+  background-clip: padding-box;
+  background: rgb(255, 255, 255);
+  border: 1px solid #999;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: normal;
+  text-align: center; 
+  height: 33px;
+  width: 33px;
+}
+
+.buttonOption:active {
+  background: rgb(150, 225, 255);
+}
+
+.numProgress {
+  background-clip: padding-box;
+  background: rgb(255, 255, 255);
+  //border: 1px solid #999;
+  border: none;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: normal;
+  //height: 33px;
+  width: 33px;
+}
+
+/*
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+*/
+
+.status {
+  margin-bottom: 10px;
+}
+
+/*these have a lot of shared properties, can I make the others a subset of 'square'?*/
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 36px;
+  height: 36px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 36px;
+}
+
+.squareStarting {
+  background: rgb(235, 235, 235);
+  color: rgb(95, 95, 95);
+  font-weight: bold;
+}
+
+.squareMain {
+  background: rgb(99, 172, 255);
+  border: 1px solid #999;
+  font-size: 24px;
+  //font-weight: normal;
+  line-height: 36px;
+  height: 36px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 36px;
+}
+
+.squareNearby {
+  background: rgb(228, 240, 255);
+  border: 1px solid #999;
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 36px;
+  height: 36px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 36px;
+}
+
+.squareMatching {
+  background: rgb(152, 222, 255);
+  border: 1px solid #999;
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 36px;
+  height: 36px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 36px;
+}
+
+.square:focus {
+  outline: none;
+}
+
+.notes {
+  border: none;
+  font-size: 6px;
+  font-weight: normal;
+  line-height: 12px;
+  height: 12px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 12px;
+}
+
+.kbd-navigation .square:focus {
+  background: #ddd;
+}
+
+
+.game {
+  /*display: flex;*/
+  flex-direction: row;
+}
+
+/* .game-info {
+  margin-left: 20px;
+} */
