@@ -31,16 +31,12 @@ button {
   margin-bottom: 6px;
 }
 
-button :focus {
-  
-}
-
 .activeButton {
-  background: rgb(149, 149, 149);
+  //background: rgb(149, 149, 149);
 }
 
 .inactiveButton {
-  background: rgb(150, 225, 255);
+  //background: rgb(150, 225, 255);
 }
 
 td { 
