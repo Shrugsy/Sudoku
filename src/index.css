@@ -1,5 +1,5 @@
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
+  font: 14px "Calibri", Futura, sans-serif;
   margin: 20px;
 }
 
@@ -7,18 +7,36 @@ body {
   padding-left: 30px;
 } */
 
+h4 {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
 
 table { 
   border-collapse: collapse; 
   font-family: Calibri, sans-serif; 
 }
 
-colgroup, tbody { 
+
+colgroup { 
   border: solid medium; 
 }
 
 button {
+  font-family: Calibri;
   font-size: 18px;
+  border-radius: 30%;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.activeButton {
+  background: rgb(149, 149, 149);
+}
+
+.inactiveButton {
+  background: rgb(150, 225, 255);
 }
 
 td { 
@@ -32,6 +50,35 @@ td {
   -ms-user-select: none;
 }
 
+.notesTable {
+  table-layout: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.notesBody {
+  width: 100%;
+  height: 100%;
+}
+
+.notesTR {
+  width: 33%;
+  height: 33%;
+}
+
+.notesTD {
+  //border: solid thin;
+  width: 33%;
+  height: 33%;
+  font-Size: 8px;
+  line-height: 8px;
+  //font-weight: normal;
+  //text-align: center;
+}
+
+.boardBody {
+  border: solid medium;
+}
 
 .buttonOption {
   background-clip: padding-box;

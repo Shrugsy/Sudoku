@@ -5,7 +5,12 @@ const chunk = require('lodash.chunk');
 //import Boards from './boards.js';
 let Boards = require('./boards');
 
-var difficulty = 'Easy'
+var difficulty = 'Easy';
+
+var pencilMode = false;
+var pencilModeStatus = 'Turn on Pencil Mode'
+var pencilModeButtonClass = 'btn btn-outline-primary btn-sm'
+var pencilModeIconClass = 'far fa-edit';
 
 const rows = 9;
 const cols = 9;
@@ -92,7 +97,29 @@ function App() {
 
 //<Notes></Notes>
 function Square(props) {
-  let val = (props.value !== 0) ? props.value : undefined;
+
+//  noteVal
+  let notes = <table className={'notesTable'}>
+    <tbody className={'notesBody'}>
+    <tr className={'notesTR'}>
+      <td className={'notesTD'}>{props.notes[0] !== 0 ? props.notes[0] : undefined}</td>
+      <td className={'notesTD'}>{props.notes[1] !== 0 ? props.notes[1] : undefined}</td>
+      <td className={'notesTD'}>{props.notes[2] !== 0 ? props.notes[2] : undefined}</td>
+    </tr>
+    <tr className={'notesTR'}>
+      <td className={'notesTD'}>{props.notes[3] !== 0 ? props.notes[3] : undefined}</td>
+      <td className={'notesTD'}>{props.notes[4] !== 0 ? props.notes[4] : undefined}</td>
+      <td className={'notesTD'}>{props.notes[5] !== 0 ? props.notes[5] : undefined}</td>
+    </tr>
+    <tr className={'notesTR'}>
+      <td className={'notesTD'}>{props.notes[6] !== 0 ? props.notes[6] : undefined}</td>
+      <td className={'notesTD'}>{props.notes[7] !== 0 ? props.notes[7] : undefined}</td>
+      <td className={'notesTD'}>{props.notes[8] !== 0 ? props.notes[8] : undefined}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  let val = (props.value !== 0) ? props.value : notes;
   //console.log(props.style)
   //let squareStyle = (props.style !== '') ? {fontWeight: 'bold', background: 'rgb(210, 210, 210)'} : {fontWeight: 'normal'};
   let squareStyle
@@ -122,6 +149,7 @@ class Board extends React.Component {
       <Square
         key = {i}
         value = {this.props.squares[i]}
+        notes = {this.props.notes[i]}
         className = {this.props.className[i]}
         style = {this.props.style[i]}
         onClick = {() => this.props.onClick(i)}
@@ -140,7 +168,7 @@ class Board extends React.Component {
   )
 
   let board = chunk(allRows, 3).map((val, idx) =>
-    <tbody key={idx}>
+    <tbody key={idx} className={'boardBody'}>
       {val}
     </tbody>
     )
@@ -177,7 +205,6 @@ function SquareOptions(props) {
 
   return (
     <div>
-      <br></br>
       <table
         style = {{borderCollapse: 'separate', width: '340px'}}
       >
@@ -219,6 +246,7 @@ class Game extends React.Component {
         history: [{
           //squares: Array(numSquares).fill(null),
           squares: startingBoard,
+          notes: Array(numSquares).fill(null).map(() => Array(9).fill(0)),
           progress: Array(9).fill(0),
         }],
         stepNumber: 0,
@@ -227,6 +255,8 @@ class Game extends React.Component {
       }
       
     } 
+
+    
 
     highlightSquares(passedSquare, step = -1) {
       //console.log('board array')
@@ -304,23 +334,77 @@ class Game extends React.Component {
       const current = history[history.length - 1];
       const squares = current.squares.slice();
       const squaresClassNames = this.state.squaresClassNames.slice();
+      const notes = current.notes.slice();
       const progress = current.progress.slice();
 
       let val = i + 1
 
+      //TODO
+      //need big modifications to how this works
+      //e.g.
+      //if (pencilMode) {
+
+      //}
+
+      //TODO
+      //pencil mode active & cell already filled in?
       if (activeSquare === -1) {
         status = 'No square selected. Please check your moves!'
         this.setState({
           history: history
         })
+      } else if (pencilMode) {
+        //console.log('Pencil mode active')
+      
+        if (val === 0) {
+          notes[activeSquare] = Array(9).fill(0);
+        } else {
+          notes[activeSquare][i] = notes[activeSquare][i] === 0 ? val : 0
+        }
+
+        status = 'Awaiting move.'
+
+        
+        
+        this.setState({
+          history: history.concat([{
+              squares: squares,
+              notes: notes,
+              progress: progress
+          }]),
+          stepNumber: history.length,
+          squaresClassNames: squaresClassNames
+        })
+
       } else if (startingBoard[activeSquare] === 0) {
 
         let pos = new Position(boardArray, activeSquare)
         let rowArr = pos.rowIndexes().vals.map((idx) =>  squares[idx])
         let colArr = pos.colIndexes().vals.map((idx) =>  squares[idx])
         let blockArr = pos.blockIndexes().vals.map((idx) =>  squares[idx])
+
         
-        if (squares[activeSquare] === val) {
+        if (val === 0) {
+
+          squares[activeSquare] = val;
+          notes[activeSquare] = Array(9).fill(0);
+          progress.forEach((val, idx) => {
+            progress[idx] = countOccurences(squares, idx + 1)
+          })
+
+          status = 'Cell cleared. Awaiting move.'
+          this.setState({
+            history: history.concat([{
+                squares: squares,
+                notes: notes,
+                progress: progress
+            }]),
+            stepNumber: history.length,
+            squaresClassNames: squaresClassNames
+          }, () => {
+            this.highlightSquares(activeSquare)
+          })
+        } else if (squares[activeSquare] === val) {
           status = 'Cell already contains this value. Please check your moves!'
           this.setState({
             history: history
@@ -333,9 +417,7 @@ class Game extends React.Component {
           })
 
         } else {
-        //TODO
-        //only do this if the activeSquare is not one of the starting squares!
-        //also only do this if the value is not a mistake, otherwise add to list of mistakes!
+
         squares[activeSquare] = val  
         
         progress.forEach((val, idx) => {
@@ -347,6 +429,7 @@ class Game extends React.Component {
         this.setState({
           history: history.concat([{
               squares: squares,
+              notes: notes,
               progress: progress
           }]),
           stepNumber: history.length,
@@ -378,7 +461,26 @@ class Game extends React.Component {
     }
 
     togglePencilMode() {
+      //TODO make this do something else later?
       
+      if (pencilMode) {
+        pencilMode = false;
+        pencilModeButtonClass = 'btn btn-outline-primary btn-sm'
+        pencilModeIconClass = 'far fa-edit'
+        pencilModeStatus = 'Turn on Pencil Mode'
+        
+      } else {
+        pencilMode = true;
+        pencilModeButtonClass = 'btn btn-primary btn-sm'
+        pencilModeIconClass = 'fas fa-edit'
+        pencilModeStatus = 'Turn off Pencil Mode'
+      }
+
+      const history = this.state.history
+      this.setState({
+        history: history
+      })
+      return pencilMode
     }
 
     componentDidMount() {
@@ -386,6 +488,7 @@ class Game extends React.Component {
       const history = this.state.history.slice(0, 1);
       const current = history[history.length - 1];
       const squares = current.squares.slice();
+      const notes = current.notes.slice();
       const progress = current.progress.slice();
       const style = this.state.style
 
@@ -401,6 +504,7 @@ class Game extends React.Component {
       this.setState({
         history: [{
           squares: squares,
+          notes: notes,
           progress: progress
         }],
         style: style
@@ -414,11 +518,10 @@ class Game extends React.Component {
       const winner = calculateWinner(current.squares);
       console.log(history);
 
-      const undo = <button onClick = {() => this.jumpTo(this.state.stepNumber-1)}>{'Undo'}</button>
-      const redo = <button onClick = {() => this.jumpTo(this.state.stepNumber+1)}>{'Redo'}</button>
-      //const pencilMode = <button onClick = {() => this.togglePencilMode()}>{'Pencil Mode'}</button>
-      const clear = <button onClick = {() => this.handleOptionClick(-1, activeSquare)}>{'Clear cell'}</button>
-      
+      const undo = <button className={'btn btn-primary btn-sm'} onClick = {() => this.jumpTo(this.state.stepNumber-1)}><i className={'fas fa-undo'}></i>{' Undo'}</button>
+      const redo = <button className={'btn btn-primary btn-sm'} onClick = {() => this.jumpTo(this.state.stepNumber+1)}><i className={'fas fa-redo'}></i>{' Redo'}</button>
+      const pencilMode = <button className={pencilModeButtonClass} onClick = {() => this.togglePencilMode()}><i className={pencilModeIconClass}></i>{' '}{pencilModeStatus}</button>
+      const clear = <button className={'btn btn-primary btn-sm'} onClick = {() => this.handleOptionClick(-1, activeSquare)}><i className={'far fa-trash-alt'}></i>{' Clear cell'}</button>
       //const solve = <button onClick = {() => startSolving(bArray)}>{'SOLVE'}</button>
       //const solve = <button onClick = {() => generateSudoku()}>{'generate'}</button>
       //NOTE: check if the board is full but something is incorrect?
@@ -428,11 +531,12 @@ class Game extends React.Component {
 
       return (
         <div className="game">
-          <h2>Sudoku!</h2>
+          <h2>Sudoku</h2>
           <div className="game-board">
             <Board
               squares = {current.squares}
               className = {this.state.squaresClassNames}
+              notes = {current.notes}
               style = {this.state.style}
               onClick = {(i) => this.highlightSquares(i)}
             />
@@ -441,16 +545,12 @@ class Game extends React.Component {
             onClick = {(i) => this.handleOptionClick(i, activeSquare)}
             progress = {current.progress}
           />
-          <div className = "game-info">
-          <br></br>
+          <div>{pencilMode}</div>
           <div>
           {undo} {redo} {clear}
           </div>
           <h4>Status:</h4>
           <div>{status}</div>
-
-
-          </div>
         </div>
       )
     }
