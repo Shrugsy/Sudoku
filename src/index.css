@@ -77,6 +77,16 @@ td {
   //text-align: center;
 }
 
+.notesMatching {
+  color: rgb(89, 153, 182);
+  width: 33%;
+  height: 33%;
+  font-Size: 12px;
+  font-Style: normal;
+  font-weight: bold;
+  line-height: 8px;
+}
+
 .boardBody {
   border: solid medium;
 }
@@ -97,6 +107,18 @@ td {
   background: rgb(150, 225, 255);
 }
 
+.buttonOptionComplete {
+  background-clip: padding-box;
+  background: rgb(150, 225, 255);
+  border: 1px solid #999;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center; 
+  height: 30px;
+  width: 25px;
+}
+
 .numProgress {
   background-clip: padding-box;
   background: rgb(255, 255, 255);
@@ -105,6 +127,18 @@ td {
   border-radius: 50%;
   font-size: 12px;
   font-weight: normal;
+  //height: 33px;
+  width: 33px;
+}
+
+.numProgressComplete {
+  background-clip: padding-box;
+  //background: rgb(150, 225, 255);
+  //border: 1px solid #999;
+  border: none;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
   //height: 33px;
   width: 33px;
 }

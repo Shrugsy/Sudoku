@@ -68,53 +68,26 @@ function App() {
   );
 }
 
-//TODO
-//have an inner table
-//fiddle with this later
-// function Notes() {
-//   return (
-//     <table className = "notes">
-//     <tbody className = "notes">
-//       <tr className = "notes">
-//         <td className = "notes">1</td>
-//         <td className = "notes">2</td>
-//         <td className = "notes">3</td>
-//       </tr>
-//       <tr className = "notes">
-//         <td className = "notes">4</td>
-//         <td className = "notes">5</td>
-//         <td className = "notes">6</td>
-//       </tr>
-//       <tr className = "notes">
-//         <td className = "notes">7</td>
-//         <td className = "notes">8</td>
-//         <td className = "notes">9</td>
-//       </tr>
-//     </tbody>
-//   </table>
-//   )
-// }
 
-//<Notes></Notes>
 function Square(props) {
 
 //  noteVal
   let notes = <table className={'notesTable'}>
     <tbody className={'notesBody'}>
     <tr className={'notesTR'}>
-      <td className={'notesTD'}>{props.notes[0] !== 0 ? props.notes[0] : undefined}</td>
-      <td className={'notesTD'}>{props.notes[1] !== 0 ? props.notes[1] : undefined}</td>
-      <td className={'notesTD'}>{props.notes[2] !== 0 ? props.notes[2] : undefined}</td>
+      <td className={props.notesClassNames[0]}>{props.notes[0] !== 0 ? props.notes[0] : undefined}</td>
+      <td className={props.notesClassNames[1]}>{props.notes[1] !== 0 ? props.notes[1] : undefined}</td>
+      <td className={props.notesClassNames[2]}>{props.notes[2] !== 0 ? props.notes[2] : undefined}</td>
     </tr>
     <tr className={'notesTR'}>
-      <td className={'notesTD'}>{props.notes[3] !== 0 ? props.notes[3] : undefined}</td>
-      <td className={'notesTD'}>{props.notes[4] !== 0 ? props.notes[4] : undefined}</td>
-      <td className={'notesTD'}>{props.notes[5] !== 0 ? props.notes[5] : undefined}</td>
+      <td className={props.notesClassNames[3]}>{props.notes[3] !== 0 ? props.notes[3] : undefined}</td>
+      <td className={props.notesClassNames[4]}>{props.notes[4] !== 0 ? props.notes[4] : undefined}</td>
+      <td className={props.notesClassNames[5]}>{props.notes[5] !== 0 ? props.notes[5] : undefined}</td>
     </tr>
     <tr className={'notesTR'}>
-      <td className={'notesTD'}>{props.notes[6] !== 0 ? props.notes[6] : undefined}</td>
-      <td className={'notesTD'}>{props.notes[7] !== 0 ? props.notes[7] : undefined}</td>
-      <td className={'notesTD'}>{props.notes[8] !== 0 ? props.notes[8] : undefined}</td>
+      <td className={props.notesClassNames[6]}>{props.notes[6] !== 0 ? props.notes[6] : undefined}</td>
+      <td className={props.notesClassNames[7]}>{props.notes[7] !== 0 ? props.notes[7] : undefined}</td>
+      <td className={props.notesClassNames[8]}>{props.notes[8] !== 0 ? props.notes[8] : undefined}</td>
     </tr>
     </tbody>
   </table>
@@ -150,6 +123,7 @@ class Board extends React.Component {
         key = {i}
         value = {this.props.squares[i]}
         notes = {this.props.notes[i]}
+        notesClassNames = {this.props.notesClassNames[i]}
         className = {this.props.className[i]}
         style = {this.props.style[i]}
         onClick = {() => this.props.onClick(i)}
@@ -195,7 +169,7 @@ class Board extends React.Component {
 //TODO
 //put these in a table to they are evenly spaced with the sudoku itself
 function SquareOptions(props) {
-  console.log(props.progress)
+  //console.log(props.progress)
 
   function formatProgress(currentOccurences) {
     let finalOccurences = 9
@@ -211,7 +185,7 @@ function SquareOptions(props) {
           <tr>
             {[...Array(cols).keys()].map((i) => 
             <td
-              className = 'buttonOption'
+              className = {props.progress[i] === 9 ? 'buttonOptionComplete' : 'buttonOption'}
               key={i}
               onClick = {() => props.onClick(i)}
             >
@@ -222,7 +196,8 @@ function SquareOptions(props) {
         <tr>
           {[...Array(9).keys()].map((i) =>
           <td
-            className = 'numProgress'
+            //className = 'numProgress'
+            className = {props.progress[i] === 9 ? 'numProgressComplete' : 'numProgress'}
             key={i}
           >
             {formatProgress(props.progress[i])}
@@ -250,12 +225,10 @@ class Game extends React.Component {
         }],
         stepNumber: 0,
         squaresClassNames: Array(numSquares).fill('square'),
+        notesClassNames : Array(numSquares).fill(null).map(() => Array(9).fill('notesTD')),
         style: Array(numSquares).fill(''),
       }
-      
     } 
-
-    
 
     highlightSquares(passedSquare, step = -1) {
       //console.log('board array')
@@ -273,6 +246,8 @@ class Game extends React.Component {
 
       //const current = history[this.state.stepNumber];
       const squares = current.squares.slice();
+      const notes = current.notes.slice().map((arr)=>{return arr.slice()});
+      const notesClassNames = this.state.notesClassNames.slice().map((arr)=>{return arr.slice()});
       const squaresClassNames = this.state.squaresClassNames.slice();
 
        //set all to 'square'
@@ -286,9 +261,15 @@ class Game extends React.Component {
        let colIndexes = position.colIndexes()
        let blockIndexes = position.blockIndexes()
 
+       //set all to 'notesTD'
+       notesClassNames.fill(Array(9).fill(null).map(()=>"notesTD"))
+
        if (rowIndexes) {
-         rowIndexes.vals.forEach((j) =>
-           squaresClassNames[j] = "squareNearby"
+         rowIndexes.vals.forEach((j) => {
+           //console.log(j)
+           //console.log(notes[j])
+           squaresClassNames[j] = "squareNearby";
+         }
          )
        }
  
@@ -315,15 +296,28 @@ class Game extends React.Component {
        //console.log('curr: ')
        //console.log(current)
 
+       
        squares.forEach((val, idx) => {
          if (val === squares[activeSquare] & (activeSquare !== idx) & (squares[activeSquare] !== null) & (squares[activeSquare] !== 0)) {
            //console.log(squares[activeSquare])
            squaresClassNames[idx] = "squareMatching"
          }
        })
+
+       notesClassNames.forEach((val, idx) => {
+         //console.log(val)
+         notes[idx].forEach((v, i) => {
+           if (v === squares[activeSquare] & (activeSquare !== idx) & (squares[activeSquare] !== null) & (squares[activeSquare] !== 0)) {
+              notesClassNames[idx][i] = "notesMatching"
+            }
+          })
+        })
+
+       //notesMatching
        
        this.setState({
-         squaresClassNames: squaresClassNames
+         squaresClassNames: squaresClassNames,
+         notesClassNames: notesClassNames
        });
     }
 
@@ -333,17 +327,17 @@ class Game extends React.Component {
       const current = history[history.length - 1];
       const squares = current.squares.slice();
       const squaresClassNames = this.state.squaresClassNames.slice();
-      const notes = current.notes.slice();
+      //note that we map & slice below so that the entire multi-dimensional array is copied, rather than just copying the references
+      const notes = current.notes.slice().map((arr)=>{return arr.slice()});
+      const notesClassNames = this.state.notesClassNames.slice().map((arr)=>{return arr.slice()});
       const progress = current.progress.slice();
 
       let val = i + 1
 
-      //TODO
-      //need big modifications to how this works
-      //e.g.
-      //if (pencilMode) {
-
-      //}
+      let pos = new Position(boardArray, activeSquare)
+      let rowArr = pos.rowIndexes().vals.map((idx) =>  squares[idx])
+      let colArr = pos.colIndexes().vals.map((idx) =>  squares[idx])
+      let blockArr = pos.blockIndexes().vals.map((idx) =>  squares[idx])
 
       //TODO
       //pencil mode active & cell already filled in?
@@ -357,30 +351,50 @@ class Game extends React.Component {
       
         if (val === 0) {
           notes[activeSquare] = Array(9).fill(0);
+          squares[activeSquare] = val;
+          progress.forEach((val, idx) => {
+            progress[idx] = countOccurences(squares, idx + 1)
+          })
+          status = 'Awaiting move.'
+          this.setState({
+            history: history.concat([{
+                squares: squares,
+                notes: notes,
+                progress: progress
+            }]),
+            stepNumber: history.length,
+            squaresClassNames: squaresClassNames,
+            notesClassNames: notesClassNames
+          })
+        } else if (detectConflict(val, rowArr, colArr, blockArr) & val !== 0) {
+          console.log('CONFLICTING VALUES')
+          status = 'Conflicting cells found with value ' + val + '. Please check your moves!'
+          this.setState({
+            history: history
+          })
         } else {
           notes[activeSquare][i] = notes[activeSquare][i] === 0 ? val : 0
+
+          status = 'Awaiting move.'
+
+          this.setState({
+            history: history.concat([{
+                squares: squares,
+                notes: notes,
+                progress: progress
+            }]),
+            stepNumber: history.length,
+            squaresClassNames: squaresClassNames,
+            notesClassNames: notesClassNames
+          })
         }
-
-        status = 'Awaiting move.'
-
-        
-        
-        this.setState({
-          history: history.concat([{
-              squares: squares,
-              notes: notes,
-              progress: progress
-          }]),
-          stepNumber: history.length,
-          squaresClassNames: squaresClassNames
-        })
 
       } else if (startingBoard[activeSquare] === 0) {
 
-        let pos = new Position(boardArray, activeSquare)
-        let rowArr = pos.rowIndexes().vals.map((idx) =>  squares[idx])
-        let colArr = pos.colIndexes().vals.map((idx) =>  squares[idx])
-        let blockArr = pos.blockIndexes().vals.map((idx) =>  squares[idx])
+        // let pos = new Position(boardArray, activeSquare)
+        // let rowArr = pos.rowIndexes().vals.map((idx) =>  squares[idx])
+        // let colArr = pos.colIndexes().vals.map((idx) =>  squares[idx])
+        // let blockArr = pos.blockIndexes().vals.map((idx) =>  squares[idx])
 
         
         if (val === 0) {
@@ -399,7 +413,8 @@ class Game extends React.Component {
                 progress: progress
             }]),
             stepNumber: history.length,
-            squaresClassNames: squaresClassNames
+            squaresClassNames: squaresClassNames,
+            notesClassNames: notesClassNames
           }, () => {
             this.highlightSquares(activeSquare)
           })
@@ -417,11 +432,32 @@ class Game extends React.Component {
 
         } else {
 
+        //actually gets filled in here
         squares[activeSquare] = val  
         
         progress.forEach((val, idx) => {
           progress[idx] = countOccurences(squares, idx + 1)
         })
+
+        //clear out conflicting notes
+
+        let rowIndexes = pos.rowIndexes()
+        let colIndexes = pos.colIndexes()
+        let blockIndexes = pos.blockIndexes()
+
+        rowIndexes.vals.forEach((arrVal, idx) => {
+          console.log(arrVal)
+          console.log(idx)
+          console.log(notes[arrVal])
+          notes[arrVal][val-1] = 0
+        })
+        colIndexes.vals.forEach((arrVal, idx) => {
+          notes[arrVal][val-1] = 0
+        })
+        blockIndexes.vals.forEach((arrVal, idx) => {
+          notes[arrVal][val-1] = 0
+        })
+        //notes[j][currVal-1] = 0
 
         status = 'Awaiting move.'
         
@@ -432,7 +468,8 @@ class Game extends React.Component {
               progress: progress
           }]),
           stepNumber: history.length,
-          squaresClassNames: squaresClassNames
+          squaresClassNames: squaresClassNames,
+          notesClassNames: notesClassNames
         }, () => {
           this.highlightSquares(activeSquare)
         })
@@ -487,7 +524,8 @@ class Game extends React.Component {
       const history = this.state.history.slice(0, 1);
       const current = history[history.length - 1];
       const squares = current.squares.slice();
-      const notes = current.notes.slice();
+      const notes = current.notes.slice().map((arr)=>{return arr.slice()});
+      //const notesClassNames = this.state.notesClassNames.slice().map((arr)=>{return arr.slice()});
       const progress = current.progress.slice();
       const style = this.state.style
 
@@ -515,6 +553,7 @@ class Game extends React.Component {
       const history = this.state.history;
       const current = history[this.state.stepNumber];
       const winner = calculateWinner(current.squares);
+      //note that this calls twice when inputting a value because it first renders the board, then highlights squares also (which renders again)
       console.log(history);
 
       const undo = <button className={'btn btn-primary btn-sm'} onClick = {() => this.jumpTo(this.state.stepNumber-1)}><i className={'fas fa-undo'}></i>{' Undo'}</button>
@@ -535,6 +574,7 @@ class Game extends React.Component {
             <Board
               squares = {current.squares}
               className = {this.state.squaresClassNames}
+              notesClassNames = {this.state.notesClassNames}
               notes = {current.notes}
               style = {this.state.style}
               onClick = {(i) => this.highlightSquares(i)}
