@@ -446,9 +446,9 @@ class Game extends React.Component {
         let blockIndexes = pos.blockIndexes()
 
         rowIndexes.vals.forEach((arrVal, idx) => {
-          console.log(arrVal)
-          console.log(idx)
-          console.log(notes[arrVal])
+          //console.log(arrVal)
+          //console.log(idx)
+          //console.log(notes[arrVal])
           notes[arrVal][val-1] = 0
         })
         colIndexes.vals.forEach((arrVal, idx) => {
@@ -554,7 +554,7 @@ class Game extends React.Component {
       const current = history[this.state.stepNumber];
       const winner = calculateWinner(current.squares);
       //note that this calls twice when inputting a value because it first renders the board, then highlights squares also (which renders again)
-      console.log(history);
+      //console.log(history);
 
       const undo = <button className={'btn btn-primary btn-sm'} onClick = {() => this.jumpTo(this.state.stepNumber-1)}><i className={'fas fa-undo'}></i>{' Undo'}</button>
       const redo = <button className={'btn btn-primary btn-sm'} onClick = {() => this.jumpTo(this.state.stepNumber+1)}><i className={'fas fa-redo'}></i>{' Redo'}</button>
