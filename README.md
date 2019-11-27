@@ -9,4 +9,4 @@ This project was created as a react.js exercise, bootstrapped with Create React 
 This project is also hosted at: 
 https://sudokuboardgame.herokuapp.com/
 
-![Sudoku] (https://raw.githubusercontent.com/Shrugsy/Sudoku/master/Sudoku.png)
+![Sudoku](https://raw.githubusercontent.com/Shrugsy/Sudoku/master/Sudoku.png)
